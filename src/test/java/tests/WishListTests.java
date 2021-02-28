@@ -18,7 +18,7 @@ public class WishListTests {
 
         AddWishListResponse response = given()
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")
-                .cookie(AuthApi.cookies().toString())
+                .cookie(cookieText)
                 .body(bodyText)
                 .when()
                 .post("http://demowebshop.tricentis.com/addproducttocart/details/28/2")
