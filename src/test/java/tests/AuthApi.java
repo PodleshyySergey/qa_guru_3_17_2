@@ -20,11 +20,12 @@ public class AuthApi{
         return given()
                 .filter(new AllureRestAssured())  //.filter(filters().withCustomTemplates()) Для логов
                 //.accept(ContentType.ANY) //Принимаем любой контент
+//                .contentType("application/x-www-form-urlencoded")
                 .contentType("application/x-www-form-urlencoded")
 
-                .body(getData())
+                .body("Email=SerPodl%40test.ru&Password=test1234&RememberMe=false")
         .when()
-                .post("/login")
+                .post("http://demowebshop.tricentis.com/login")
         .then()
                 .log().all()
                 .statusCode(302)
@@ -36,7 +37,8 @@ public class AuthApi{
 
         for (String key : map.keySet()) {
             if (stringBuilder.length() > 0) {
-                stringBuilder.append("&");
+//                stringBuilder.append("&");
+                stringBuilder.append("; ");
             }
             String value = map.get(key);
             try {
@@ -51,9 +53,9 @@ public class AuthApi{
         return stringBuilder.toString();
     }
 
-    private static String getData() {
-        return "email=" + EMAIL + "&password=" + PASSWORD + "&RememberMe=false"; //потому что = application/x-www-form-urlencoded
-    }
+//    private static String getData() {
+//        return "email=" + EMAIL + "&password=" + PASSWORD + "&RememberMe=false"; //потому что = application/x-www-form-urlencoded
+//    }
 }
 
 
