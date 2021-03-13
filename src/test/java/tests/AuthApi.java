@@ -2,11 +2,9 @@ package tests;
 
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 
 public class AuthApi{
@@ -18,15 +16,16 @@ public class AuthApi{
     public static Map<String, String> cookies() {
 
         return given()
-                .filter(new AllureRestAssured())  //.filter(filters().withCustomTemplates()) Для логов
+                .filter(new AllureRestAssured())
+                //.filter(filters().withCustomTemplates()) Для логов
                 //.accept(ContentType.ANY) //Принимаем любой контент
-//                .contentType("application/x-www-form-urlencoded")
+                //.contentType("application/x-www-form-urlencoded")
                 .contentType("application/x-www-form-urlencoded")
-
-                .body("Email=SerPodl%40test.ru&Password=test1234&RememberMe=false")
-        .when()
+//                .body("Email=SerPodl%40test.ru&Password=test1234&RememberMe=false")
+                .body("Email=" + EMAIL + "&Password=" + PASSWORD + "&RememberMe=false")
+            .when()
                 .post("http://demowebshop.tricentis.com/login")
-        .then()
+            .then()
                 .log().all()
                 .statusCode(302)
                 .extract().cookies();
@@ -34,10 +33,8 @@ public class AuthApi{
 
     public static String mapToString(Map<String, String> map) {
         StringBuilder stringBuilder = new StringBuilder();
-
         for (String key : map.keySet()) {
             if (stringBuilder.length() > 0) {
-//                stringBuilder.append("&");
                 stringBuilder.append("; ");
             }
             String value = map.get(key);
@@ -52,10 +49,6 @@ public class AuthApi{
 
         return stringBuilder.toString();
     }
-
-//    private static String getData() {
-//        return "email=" + EMAIL + "&password=" + PASSWORD + "&RememberMe=false"; //потому что = application/x-www-form-urlencoded
-//    }
 }
 
 
