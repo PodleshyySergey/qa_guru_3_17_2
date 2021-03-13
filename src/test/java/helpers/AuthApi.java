@@ -1,4 +1,4 @@
-package tests;
+package helpers;
 
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -17,11 +17,9 @@ public class AuthApi{
 
         return given()
                 .filter(new AllureRestAssured())
-                //.filter(filters().withCustomTemplates()) Для логов
+                //.filter(filters().withCustomTemplates()) //Для логов
                 //.accept(ContentType.ANY) //Принимаем любой контент
-                //.contentType("application/x-www-form-urlencoded")
                 .contentType("application/x-www-form-urlencoded")
-//                .body("Email=SerPodl%40test.ru&Password=test1234&RememberMe=false")
                 .body("Email=" + EMAIL + "&Password=" + PASSWORD + "&RememberMe=false")
             .when()
                 .post("http://demowebshop.tricentis.com/login")
@@ -31,6 +29,7 @@ public class AuthApi{
                 .extract().cookies();
     }
 
+    // Преобразование из map в String нашел в сети, наверное это можно сделать проще
     public static String mapToString(Map<String, String> map) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String key : map.keySet()) {
@@ -46,7 +45,6 @@ public class AuthApi{
                 throw new RuntimeException("This method requires UTF-8 encoding support", e);
             }
         }
-
         return stringBuilder.toString();
     }
 }

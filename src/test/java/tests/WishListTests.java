@@ -1,20 +1,14 @@
 package tests;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-
-import static com.codeborne.selenide.Selectors.byName;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import models.AddWishListResponse;
+import org.junit.jupiter.api.*;
+import static helpers.AuthApi.cookies;
+import static helpers.AuthApi.mapToString;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static tests.AuthApi.cookies;
-import static tests.AuthApi.mapToString;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class WishListTests {
+public class WishListTests extends TestBase {
     String cookieText = mapToString(cookies());
 
     @Test
@@ -38,7 +32,7 @@ public class WishListTests {
     @Test
     @Order(2)
     public void removeFromWishListTest() {
-        String prodVal = getNumberProduct();
+        String prodVal = getNumberProduct(); //Получение номера продукта из WishList для передачи в запросе на его удаление
         String bodyText = "removefromcart=" + prodVal + "&itemquantity" + prodVal + "=1&updatecart=Update+wishlist";
 
         given()
@@ -49,13 +43,6 @@ public class WishListTests {
                 .post("http://demowebshop.tricentis.com/wishlist")
                 .then()
                 .statusCode(200);
-    }
-
-    public String getNumberProduct() {
-        open("http://demowebshop.tricentis.com/Themes/DefaultClean/Content/images/logo.png");
-        CookieManager.addCookiesToSite(cookies());
-        open("http://demowebshop.tricentis.com/wishlist");
-        return $(byName("removefromcart")).getValue();
     }
 
 }
